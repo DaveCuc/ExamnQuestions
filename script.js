@@ -5,6 +5,7 @@ const questionText = document.getElementById('questionText');
 const answerText = document.getElementById('answerText');
 const prevBtn = document.getElementById('prevBtn');
 const nextBtn = document.getElementById('nextBtn');
+const shuffleBtn = document.getElementById('shuffleBtn'); // Nuevo selector
 const progress = document.getElementById('progress');
 const resetBtn = document.getElementById('resetBtn');
 
@@ -20,34 +21,26 @@ csvFile.addEventListener('change', (e) => {
     reader.readAsText(file);
 });
 
-// --- FUNCIÓN DE PARSEO CORREGIDA ---
 function parseCSV(text) {
-    const lines = text.split(/\r?\n/); // Dividir por líneas
+    const lines = text.split(/\r?\n/);
     flashcards = [];
 
     lines.forEach(line => {
-        if (!line.trim()) return; // Ignorar líneas vacías
-
-        // Usamos esta función auxiliar para dividir respetando comillas
+        if (!line.trim()) return;
         const cols = splitCSVLine(line);
-
-        // Validamos que tenga al menos Pregunta (A) y Respuesta (B)
         if (cols.length >= 2) {
-            flashcards.push({ 
-                q: cols[0].trim(), 
-                a: cols[1].trim() 
-            });
+            flashcards.push({ q: cols[0].trim(), a: cols[1].trim() });
         }
     });
 
     if (flashcards.length > 0) {
         initGame();
     } else {
-        alert("No se pudieron leer preguntas. Verifica el formato del archivo.");
+        alert("No se pudieron leer preguntas.");
     }
 }
 
-// Analizador carácter por carácter (Infalible para comillas y comas)
+// Parser robusto (Mantenemos el que ya funciona)
 function splitCSVLine(text) {
     const result = [];
     let current = '';
@@ -55,24 +48,21 @@ function splitCSVLine(text) {
 
     for (let i = 0; i < text.length; i++) {
         const char = text[i];
-
         if (char === '"') {
-            // Si detectamos comillas dobles ("") dentro de comillas, es una comilla literal
             if (inQuotes && text[i + 1] === '"') {
                 current += '"';
-                i++; // Saltar la siguiente comilla
+                i++;
             } else {
-                inQuotes = !inQuotes; // Entrar o salir de modo "texto citado"
+                inQuotes = !inQuotes;
             }
         } else if (char === ',' && !inQuotes) {
-            // Si hay coma y NO estamos en comillas, es separador
             result.push(current);
             current = '';
         } else {
             current += char;
         }
     }
-    result.push(current); // Añadir el último campo
+    result.push(current);
     return result;
 }
 
@@ -85,11 +75,24 @@ function initGame() {
     updateUI();
 }
 
+// --- NUEVA FUNCIÓN PARA MEZCLAR ---
+function shuffleFlashcards() {
+    // Algoritmo Fisher-Yates
+    for (let i = flashcards.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [flashcards[i], flashcards[j]] = [flashcards[j], flashcards[i]];
+    }
+    // Reiniciar al principio
+    currentIndex = 0;
+    // Efecto visual: Aseguramos que la carta muestre el frente
+    card.classList.remove('is-flipped');
+    updateUI();
+}
+
 function updateUI() {
     card.classList.remove('is-flipped');
     
     setTimeout(() => {
-        // Limpieza visual extra por si quedaron comillas al inicio/final
         let q = flashcards[currentIndex].q.replace(/^"|"$/g, '');
         let a = flashcards[currentIndex].a.replace(/^"|"$/g, '');
 
@@ -102,7 +105,16 @@ function updateUI() {
     }, 150);
 }
 
+// --- EVENTOS ---
+
+// Voltear carta
 card.addEventListener('click', () => card.classList.toggle('is-flipped'));
+
+// Botón de mezcla
+shuffleBtn.addEventListener('click', (e) => {
+    e.stopPropagation(); // Evita que el clic se propague si estuviera dentro de la carta (no es el caso aquí, pero es buena práctica)
+    shuffleFlashcards();
+});
 
 prevBtn.addEventListener('click', (e) => {
     e.stopPropagation();
