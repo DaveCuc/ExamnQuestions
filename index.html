@@ -11,6 +11,14 @@
         <label for="csvFile" class="custom-file-upload">Cargar Archivo CSV</label>
         <input type="file" id="csvFile" accept=".csv">
     </div>
+    <div class="controls">
+    <button id="prevBtn" class="nav-btn" title="Anterior">←</button>
+    
+    <button id="shuffleBtn" class="nav-btn" style="background: #ffc107; color: #333;" title="Mezclar preguntas">🔀</button>
+    
+    <span id="progress">0 / 0</span>
+    <button id="nextBtn" class="nav-btn" title="Siguiente">→</button>
+</div>
 
     <div id="gameContainer" style="display: none;">
         <div class="card-container">
@@ -24,12 +32,7 @@
             </div>
         </div>
 
-        <div class="controls">
-            <button id="prevBtn" class="nav-btn">←</button>
-            <span id="progress">0 / 0</span>
-            <button id="nextBtn" class="nav-btn">→</button>
-        </div>
-        <button id="resetBtn" style="margin-top: 20px;">Cargar otro archivo</button>
+        
     </div>
 
     <script src="script.js"></script>
