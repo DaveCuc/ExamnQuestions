@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Flashcards Ciberseguridad</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -11,14 +12,6 @@
         <label for="csvFile" class="custom-file-upload">Cargar Archivo CSV</label>
         <input type="file" id="csvFile" accept=".csv">
     </div>
-    <div class="controls">
-    <button id="prevBtn" class="nav-btn" title="Anterior">←</button>
-    
-    <button id="shuffleBtn" class="nav-btn" style="background: #ffc107; color: #333;" title="Mezclar preguntas">🔀</button>
-    
-    <span id="progress">0 / 0</span>
-    <button id="nextBtn" class="nav-btn" title="Siguiente">→</button>
-</div>
 
     <div id="gameContainer" style="display: none;">
         <div class="card-container">
@@ -32,7 +25,14 @@
             </div>
         </div>
 
+        <div class="controls">
+            <button id="prevBtn" class="nav-btn" title="Anterior">←</button>
+            <button id="shuffleBtn" class="nav-btn" style="background: #ffc107; color: #333;" title="Mezclar">🔀</button>
+            <span id="progress">0 / 0</span>
+            <button id="nextBtn" class="nav-btn" title="Siguiente">→</button>
+        </div>
         
+        <button id="resetBtn">Cargar otro archivo</button>
     </div>
 
     <script src="script.js"></script>
