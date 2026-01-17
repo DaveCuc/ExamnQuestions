@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Flashcards Ciberseguridad</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="upload-section">
+        <label for="csvFile" class="custom-file-upload">Cargar Archivo CSV</label>
+        <input type="file" id="csvFile" accept=".csv">
+    </div>
+
+    <div id="gameContainer" style="display: none;">
+        <div class="card-container">
+            <div class="card" id="card">
+                <div class="card-face front">
+                    <p id="questionText"></p>
+                </div>
+                <div class="card-face back">
+                    <p id="answerText"></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button id="prevBtn" class="nav-btn">←</button>
+            <span id="progress">0 / 0</span>
+            <button id="nextBtn" class="nav-btn">→</button>
+        </div>
+        <button id="resetBtn" style="margin-top: 20px;">Cargar otro archivo</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
